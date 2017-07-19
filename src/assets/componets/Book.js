@@ -8,11 +8,21 @@ class Book extends Component {
 	}
 
 	render() {
+
+		/* Sets a basic style for the books */
+		const cover = {
+			width: 128,
+			height: 180,
+			backgroundImage: 'url(' + this.props.bookCover + ')',
+		};
+
 		return(
 			<li>
 				<div className="book">
 					<div className="book-top">
-						<div className="book-cover">
+						<div className="book-cover" style={cover}>
+						
+							/* Button to move the book to a diffrent shelf */
 							<BookShelfChanger />
 						</div>
 					</div>
