@@ -17,6 +17,8 @@ class BooksApp extends Component {
       readShelf: []
     };
     this.storeShelf = this.storeShelf.bind(this);
+    this.moveBook = this.moveBook.bind(this);
+    this.removeBook = this.removeBook.bind(this);
   }
 
   /* Get called when the componets mounts, this gathers the books that were loaded with original project and organizes them into their respective shelfs */
@@ -40,9 +42,39 @@ class BooksApp extends Component {
     });
   }
 
+  /* Function removes the book from its current shelf */
+  removeBook(id, fromShelf) {
+    const fShelf = this.state[fromShelf];
+    const updateShelf = fShelf.filter((i) => i.key !== id)
+    return this.setState({
+      [fromShelf]: updateShelf
+    })
+  }
+
+  /* Function removes the book from its current shelf and appends the data to the shelf that the user selected */
+  moveBook(state, moveToShelf, fromShelf) {
+
+    /* If he user accidently selects the shelf that the book is already on, it notifies the user */
+    if (fromShelf === moveToShelf) {
+      return alert('The book is already on that shelf');
+    }
+    const id = state.id;
+    const mShelf = this.state[moveToShelf];
+    const moveShelf = mShelf.concat([state]);
+    this.removeBook(id, fromShelf);
+    this.setState({
+      [moveToShelf]: moveShelf,
+    })
+  }
+
   componentDidMount() {
     /* Gathers the books that were loaded with original project */
     this.storeShelf(preLoadBooks.preLoadBooks);
+
+    /* Gathers books from BooksAPI and loads data as an array into 'books' */
+    BooksAPI.getAll().then((books) => {
+      this.setState({ books })
+    })
   }
 
   render() {
@@ -55,7 +87,7 @@ class BooksApp extends Component {
         <Route exact path='/search' component={SearchPage} />
         <Route exact path='/' render={() => (
           <div>
-            <MainPage shelfData={shelfs}/>
+            <MainPage shelfData={shelfs} moves={this.moveBook} remove={this.removeBook}/>
             <div className="open-search">
               <Link to='/search'>Add a book</Link>
             </div>
