@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as BooksAPI from './BooksAPI'
 import './App.css'
 import { Link, Route } from 'react-router-dom'
 import './BooksAPI'
@@ -11,7 +10,6 @@ class BooksApp extends Component {
   constructor() {
     super();
     this.state = {
-      books: [],
       currentlyReadingShelf:[],
       wantToReadShelf: [],
       readShelf: []
@@ -39,28 +37,29 @@ class BooksApp extends Component {
       currentlyReadingShelf: currentlyReadingShelf,
       wantToReadShelf: wantToReadShelf,
       readShelf: readShelf
-    });
+    })
   }
 
   /* Function removes the book from its current shelf */
   removeBook(id, fromShelf) {
     const fShelf = this.state[fromShelf];
-    const updateShelf = fShelf.filter((i) => i.key !== id)
+    const updateShelf = fShelf.filter((i) => i.id !== id)
     return this.setState({
       [fromShelf]: updateShelf
     })
   }
 
   /* Function removes the book from its current shelf and appends the data to the shelf that the user selected */
-  moveBook(state, moveToShelf, fromShelf) {
+  moveBook(book, moveToShelf, fromShelf) {
 
     /* If he user accidently selects the shelf that the book is already on, it notifies the user */
     if (fromShelf === moveToShelf) {
       return alert('The book is already on that shelf');
     }
-    const id = state.id;
+    const id = book.id;
+    book.shelf = moveToShelf;
     const mShelf = this.state[moveToShelf];
-    const moveShelf = mShelf.concat([state]);
+    const moveShelf = mShelf.concat([book]);
     this.removeBook(id, fromShelf);
     this.setState({
       [moveToShelf]: moveShelf,
@@ -70,11 +69,6 @@ class BooksApp extends Component {
   componentDidMount() {
     /* Gathers the books that were loaded with original project */
     this.storeShelf(preLoadBooks.preLoadBooks);
-
-    /* Gathers books from BooksAPI and loads data as an array into 'books' */
-    BooksAPI.getAll().then((books) => {
-      this.setState({ books })
-    })
   }
 
   render() {
@@ -84,8 +78,10 @@ class BooksApp extends Component {
 
     return (
       <div className="app">
-        <Route exact path='/search' component={SearchPage} />
-        <Route exact path='/' render={() => (
+        <Route exact path='/search' render={({ history }) => (
+          <SearchPage />
+        )} />
+        <Route exact path='/' render={({ history }) => (
           <div>
             <MainPage shelfData={shelfs} moves={this.moveBook} remove={this.removeBook}/>
             <div className="open-search">
