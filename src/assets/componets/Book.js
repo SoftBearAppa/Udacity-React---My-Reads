@@ -14,7 +14,7 @@ class Book extends Component {
 			id: this.props.id
 		}
 		this.moveBookData = this.moveBookData.bind(this);
-		this.removeBookData = this.removeBookData.bind(this);
+		/* this.removeBookData = this.removeBookData.bind(this); */
 	}
 
 	/* Function receives a value from 'BookShelfChanger' and passes the value into 'move' prop which eventually calls 'moveBook' from 'App.js'  to move the book from its current shelf to shelf that was selected from 'BookShelfChanger'*/
@@ -24,10 +24,10 @@ class Book extends Component {
 	}
 
 	/* Function calls on 'remove' prop which eventually calls 'removeBook' from 'App.js' to remove the book from it's current shelf. */
-	removeBookData() {
+	/* removeBookData() {
 		const remove = this.props.remove;
-		remove(this.state.id, this.props.bookShelf);
-	}
+		remove(this.state, this.props.bookShelf);
+	} */
 
 	render() {
 
@@ -45,7 +45,7 @@ class Book extends Component {
 						<div className="book-cover" style={cover}>
 
 							{/* Button to move the book to a diffrent shelf */}
-							<BookShelfChanger moves={this.moveBookData} remove={this.removeBookData} shelf={this.props.bookShelf}/>
+							<BookShelfChanger moves={this.moveBookData} /* remove={this.removeBookData} */ shelf={this.props.bookShelf}/>
 						</div>
 					</div>
 					<div className="book-title">

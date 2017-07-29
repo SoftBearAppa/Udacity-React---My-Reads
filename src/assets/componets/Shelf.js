@@ -13,8 +13,11 @@ class Shelf extends Component {
 		const moveBook = this.props.moves;
 		const removeBook = this.props.remove;
 		const arraydata = [];
+		if (data === undefined) {
+			return console.log('data is: undefined');
+		}
 		data.map(datas =>
-			arraydata.push(<Book moves={moveBook} remove={removeBook} bookTitle={datas.title} bookAuthor={datas.authors} bookShelf={this.props.value} key={datas.key} id={datas.key} bookCover={datas.url}/>))
+			arraydata.push(<Book moves={moveBook} remove={removeBook} bookTitle={datas.title} bookAuthor={datas.authors} bookShelf={this.props.value} key={datas.id} id={datas.id} bookCover={datas.url || datas.imageLinks.thumbnail}/>))
 			return arraydata;
 	}
 

@@ -10,9 +10,6 @@ class BookShelfChanger extends Component {
 	}
 
 	changeShelf(e) {
-		if (e.target.value === 'none') {
-			return this.props.remove();
-		}
 		this.props.moves(e.target.value)
 	}
 
@@ -21,9 +18,9 @@ class BookShelfChanger extends Component {
 			<div className="book-shelf-changer">
 				<select value={this.state.shelf} onChange={this.changeShelf}>
 					<option value="none" disabled>Move to...</option>
-					<option value="currentlyReadingShelf">Currently Reading</option>
-					<option value="wantToReadShelf">Want to Read</option>
-					<option value="readShelf">Read</option>
+					<option value="currentlyReading">Currently Reading</option>
+					<option value="wantToRead">Want to Read</option>
+					<option value="read">Read</option>
 					<option value="none">Remove</option>
 				</select>
 			</div>

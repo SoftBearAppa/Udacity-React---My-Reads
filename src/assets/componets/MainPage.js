@@ -6,10 +6,20 @@ class MainPage extends Component {
 
 	render() {
 
+		const bookData = this.props.bookData;
+		const currentReadingBooks = bookData.filter((book) => {
+			return book.shelf === 'currentlyReading';
+		});
+		const wantToReadBooks = bookData.filter((book) => {
+			return book.shelf === 'wantToRead';
+		});
+		const readBooks = bookData.filter((book) => {
+			return book.shelf === 'read';
+		});
+
 		/* Sets the prop as a variables for ease of refference */
-		const shelfData = this.props.shelfData;
 		const moveBook = this.props.moves;
-		const removeBook = this.props.remove;
+		/* const removeBook = this.props.remove; */
 
 		return(
 			<div className="list-books">
@@ -18,9 +28,9 @@ class MainPage extends Component {
 				</div>
 				<div className="list-books-content">
 					<div>
-						<Shelf value="currentlyReadingShelf" headerTitle="Currently Reading" books={shelfData[0]} moves={moveBook} remove={removeBook} />
-						<Shelf value="wantToReadShelf" headerTitle="Want to Read" books={shelfData[1]} moves={moveBook} remove={removeBook} />
-						<Shelf value="readShelf" headerTitle="Read" books={shelfData[2]} moves={moveBook} remove={removeBook} />
+						<Shelf value="currentlyReading" headerTitle="Currently Reading" books={currentReadingBooks} moves={moveBook} /* remove={removeBook} */ />
+						<Shelf value="wantToRead" headerTitle="Want to Read" books={wantToReadBooks} moves={moveBook} /* remove={removeBook} */ />
+						<Shelf value="read" headerTitle="Read" books={readBooks} moves={moveBook} /* remove={removeBook} */ />
 					</div>
 				</div>
 			</div>
