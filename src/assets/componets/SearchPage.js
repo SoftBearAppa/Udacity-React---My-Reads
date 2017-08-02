@@ -39,7 +39,7 @@ class SearchPage extends Component {
 					results: data
 				});
 			}).catch((data) => {
-				console.log('Unable to search ' + '"' + query + '"' + '. please review "SEARCH_TERMS.md" for all available search terms.');
+				console.log('Unable to search "' + query + '". Please review "SEARCH_TERMS.md" for all available search terms.');
 			})
 		}
 	}
