@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './App.css'
 import { Link, Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import preLoadBooks from './PreLoadBooks'
 import SearchPage from './assets/componets/SearchPage'
 import MainPage from './assets/componets/MainPage'
 
@@ -14,6 +13,7 @@ class BooksApp extends Component {
     };
     this.storeBookData = this.storeBookData.bind(this);
     this.moveBook = this.moveBook.bind(this);
+    this.addBook = this.addBook.bind(this);
   }
 
   storeBookData(bookData) {
@@ -23,7 +23,7 @@ class BooksApp extends Component {
   }
 
   moveBook(book, toShelf) {
-    BooksAPI.update(book, toShelf).then((booksData) => {
+    BooksAPI.update(book, toShelf).then((bookId) => {
       this.setState((prevState) => {
         books: prevState.books.map((findBook) => {
           if (book.id === findBook.id) {
@@ -35,6 +35,17 @@ class BooksApp extends Component {
     });
   }
 
+  addBook(book, toShelf) {
+    console.log(book);
+    console.log(toShelf);
+    BooksAPI.update(book, toShelf).then((bookId) => {
+      book.shelf = toShelf;
+      this.setState((prevState) => {
+        books: prevState.books.concat(book)
+      })
+    })
+  }
+
   componentDidMount() {
     BooksAPI.getAll().then((bookData) => this.storeBookData(bookData));
   }
@@ -44,7 +55,7 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route exact path='/search' render={({ history }) => (
-          <SearchPage />
+          <SearchPage adds={this.addBook} currentBooks={this.state.books}/>
         )} />
         <Route exact path='/' render={({ history }) => (
           <div>
