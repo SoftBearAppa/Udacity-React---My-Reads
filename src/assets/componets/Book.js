@@ -5,21 +5,13 @@ import BookShelfChanger from './BookShelfChanger'
 class Book extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			title: this.props.bookTitle,
-			author: this.props.bookAuthor,
-			shelf: this.props.bookShelf,
-			key: this.props.id,
-			url: this.props.bookCover,
-			id: this.props.id
-		}
 		this.moveBookData = this.moveBookData.bind(this);
 	}
 
 	/* Function receives a value from 'BookShelfChanger' and passes the value into 'move' prop which eventually calls 'moveBook' from 'App.js'  to move the book from its current shelf to shelf that was selected from 'BookShelfChanger'*/
 	moveBookData(moveToShelf) {
 		const move = this.props.moves;
-		move(this.state, moveToShelf);
+		move(this.props, moveToShelf);
 	}
 
 	render() {

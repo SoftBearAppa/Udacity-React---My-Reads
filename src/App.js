@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Link, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import SearchPage from './assets/componets/SearchPage'
 import MainPage from './assets/componets/MainPage'
@@ -13,7 +13,6 @@ class BooksApp extends Component {
     };
     this.storeBookData = this.storeBookData.bind(this);
     this.moveBook = this.moveBook.bind(this);
-    this.addBook = this.addBook.bind(this);
   }
 
   storeBookData(bookData) {
@@ -35,15 +34,6 @@ class BooksApp extends Component {
     });
   }
 
-  addBook(book, toShelf) {
-    BooksAPI.update(book, toShelf).then((bookId) => {
-      book.shelf = toShelf;
-      this.setState((prevState) => {
-        return {books: prevState.books.concat(book)}
-      })
-    })
-  }
-
   componentDidMount() {
     BooksAPI.getAll().then((bookData) => this.storeBookData(bookData));
   }
@@ -53,14 +43,11 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route exact path='/search' render={({ history }) => (
-          <SearchPage adds={this.addBook} currentBooks={this.state.books}/>
+          <SearchPage moves={this.moveBook} currentBooks={this.state.books}/>
         )} />
         <Route exact path='/' render={({ history }) => (
           <div>
             <MainPage bookData={this.state.books} moves={this.moveBook} />
-            <div className="open-search">
-              <Link to='/search'>Add a book</Link>
-            </div>
           </div>
         )} />
       </div>
