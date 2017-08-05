@@ -22,16 +22,18 @@ class BooksApp extends Component {
   }
 
   moveBook(book, toShelf) {
-    BooksAPI.update(book, toShelf).then((bookId) => {
-      this.setState((prevState) => {
-        return {books: prevState.books.map((findBook) => {
-          if (book.id === findBook.id) {
-            findBook.shelf = toShelf
-          }
-          return findBook;
-        })}
-      })
-    });
+    BooksAPI.getAll().then((data) => {
+      BooksAPI.update(book, toShelf).then((bookId) => {
+        this.setState((prevState) => {
+          return {books: prevState.books.map((findBook) => {
+            if (book.id === findBook.id) {
+              findBook.shelf = toShelf
+            }
+            return findBook;
+          })}
+        })
+      });
+    })
   }
 
   componentDidMount() {

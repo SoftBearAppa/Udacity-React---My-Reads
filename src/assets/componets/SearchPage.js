@@ -18,11 +18,30 @@ class SearchPage extends Component {
 	searchDataBase(e) {
 		const trimmedQuery = e.target.value.trim()
 		if(trimmedQuery) {
-			BooksAPI.getAll().then((data) => {
-				BooksAPI.search(trimmedQuery).then((data) => {
-					this.setState({
-						results: data
-					});
+			BooksAPI.getAll().then((bookStates) => {
+				console.log(bookStates);
+				BooksAPI.search(trimmedQuery).then((searchedBooks) => {
+					console.log(searchedBooks);
+					if (searchedBooks) {
+						let filterBooks = [];
+						if (filterBooks) {
+							filterBooks = searchedBooks;
+							filterBooks = filterBooks.map((book) => {
+								const foundBook = bookStates.find((bookStatesBooks) => {
+									return bookStatesBooks.id === book.id
+								});
+								if (foundBook) {
+									return foundBook
+								} else {
+									return book
+								}
+							})
+							console.log(searchedBooks)
+						}
+						this.setState({
+							results: filterBooks
+						});
+					}
 				}).catch((data) => {
 					console.log('Unable to search "' + trimmedQuery + '". Please review "SEARCH_TERMS.md" for all available search terms.');
 				})
@@ -41,7 +60,7 @@ class SearchPage extends Component {
 							</Debounce>
 						</div>
 				</div>
-				<Shelf value="none" headerTitle="" books={this.state.results} moves={this.props.moves}/>
+				<Shelf value="Search" headerTitle="" books={this.state.results} moves={this.props.moves}/>
 			</div>
 		)
 	}

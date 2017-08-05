@@ -11,13 +11,10 @@ class Shelf extends Component {
 	/* This gets called to generate a 'Book' component and push it into an array to be appened to the page */
 	generateBooks(data) {
 		const moveBook = this.props.moves;
-		const arraydata = [];
 		if (data === undefined) {
 			return console.log('data is: undefined');
 		}
-		data.map(datas =>
-			arraydata.push(<Book moves={moveBook} bookTitle={datas.title} bookAuthor={datas.authors} bookShelf={this.props.value} key={datas.id} id={datas.id} bookCover={datas.url || datas.imageLinks.thumbnail}/>))
-			return arraydata;
+		return data.map(datas => <Book moves={moveBook} bookTitle={datas.title} bookAuthor={datas.authors} bookShelf={datas.shelf} key={datas.id} id={datas.id} bookCover={datas.url || datas.imageLinks.thumbnail}/>)
 	}
 
 	render() {
